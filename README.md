@@ -7,6 +7,7 @@
 ## 1. 说明
 
 - 本文是基于 [wxappUnpacker](https://github.com/qwerty472123/wxappUnpacker "wxappUnpacker") 创作的。
+
 > - [x] 修复 “ReferenceError: $gwx is not defined” 和 extract wxss 等问题
 > - [x] 支持分包
 > - [x] 支持一键解包
@@ -18,9 +19,13 @@
 
 Android 手机最近使用过的微信小程序所对应的 wxapkg 包文件都存储在特定文件夹下，可通过以下命令查看：
 
-    adb pull /data/data/com.tencent.mm/MicroMsg/{User}/appbrand/pkg ./
+```
+adb pull /data/data/com.tencent.mm/MicroMsg/{User}/appbrand/pkg ./
+```
 
 其中`{User}` 为当前用户的用户名，类似于 `2bc**************b65`。
+
+
 
 ## 3. 用法
 
@@ -61,6 +66,7 @@ Android 手机最近使用过的微信小程序所对应的 wxapkg 包文件都�
 ** 举例
 
 Mac OS
+
 ```bash
 ./de_miniapp.sh -d ./testpkg/_-751579163_42.wxapkg
 ```
@@ -81,24 +87,39 @@ node wuWxapkg.js 小程序包路径(.wxapkg格式)
 node wuWxapkg.js testpkg\_-751579163_42.wxapkg
 ```
 
+- wxpkg文件看  
+
+```
+ _-XXXXX_.wxapkg
+```
+
+  **反编译才可以，其他的会有各式各样的报错，提示分包之类的。（花了几个小时的挖坑得出来的），**
+**其他按照流程一般都不会出问题，还有就是命令要在wxappUnpacker文件夹下运行命令**
+
+```
+node wuWxapkg.js _-XXXXX_.wxapkg
+```
+
 - 分包功能
 
 当检测到 wxapkg 为子包时, 添加-s 参数指定主包源码路径即可自动将子包的 wxss,wxml,js 解析到主包的对应位置下. 完整流程大致如下: 
+
 1. 获取主包和若干子包
 2. 解包主包 `./bingo.sh testpkg/master-xxx.wxapkg`
 3. 解包子包 `./bingo.sh testpkg/sub-1-xxx.wxapkg -s=../master-xxx`
 
 TIP
+
 > -s 参数可为相对路径或绝对路径, 推荐使用绝对路径, 因为相对路径的起点不是当前目录 而是子包解包后的目录
 
 ```
 ├── testpkg
-│   ├── sub-1-xxx.wxapkg #被解析子包
-│   └── sub-1-xxx               #相对路径的起点
-│       ├── app-service.js
-│   ├── master-xxx.wxapkg
-│   └── master-xxx             # ../master-xxx 就是这个目录
-│       ├── app.json
+│   ├── sub-1-xxx.wxapkg #被解析子包
+│   └── sub-1-xxx               #相对路径的起点
+│       ├── app-service.js
+│   ├── master-xxx.wxapkg
+│   └── master-xxx             # ../master-xxx 就是这个目录
+│       ├── app.json
 ```
 
 ### 4. 提取统计WXSS或者其他样式
@@ -128,24 +149,5 @@ git clone https://github.com/larack8/calcwords
 如下图样式
 
 ![输出结果文件](testpkg/cc.png)
-
-
-### 5. 关于作者
-
-> * jinqianli
-
-> * email: [jinqiangood@gmail.com], [larack@126.com]
-
-> * [jinqianli-知乎](https://www.zhihu.com/people/jinqianli/)
-
-> * [jinqianli-cnblog](https://www.cnblogs.com/larack/)
-
-> * jinqianli-官方小程序
-
-![jinqianli-官方小程序](testpkg/jinqianli_miniapp_logo.png)
-
-如果你觉得这篇文章很好，请赞赏作者加个鸡腿吧
-
-![jinqianli-赞赏码](testpkg/jinqianli_shoukuan.png)
 
 `jinqianli,2019.02.20`
